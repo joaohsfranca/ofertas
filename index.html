@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ofertas</title>
+<link rel="stylesheet" href="painel.css?v=22">
+</head>
+<body>
+<header class="topo" id="topo">
+  <div class="topo-in">
+    <h1 class="marca">Ofertas</h1>
+    <nav class="abas" role="tablist" aria-label="Mercado">
+      <button role="tab" id="t-br" class="aba" data-aba="br" aria-selected="true" aria-controls="mercado" tabindex="0">Brasil</button>
+      <button role="tab" id="t-cn" class="aba" data-aba="cn" aria-selected="false" aria-controls="mercado" tabindex="-1">China</button>
+      <button role="tab" id="t-py" class="aba" data-aba="py" aria-selected="false" aria-controls="mercado" tabindex="-1">Paraguai</button>
+      <button role="tab" id="t-cmp" class="aba" data-aba="cmp" aria-selected="false" aria-controls="comparar" tabindex="-1">Comparar</button>
+      <button role="tab" id="t-lnk" class="aba" data-aba="lnk" aria-selected="false" aria-controls="links" tabindex="-1">Link</button>
+    </nav>
+    <form id="busca" class="busca" role="search">
+      <label for="q" class="sr">Filtrar o que já chegou ou buscar nas lojas</label>
+      <input id="q" type="search" placeholder="Filtrar ou buscar produto: tênis asics, iphone 17…" autocomplete="off" enterkeyhint="search">
+      <button id="b-lojas" class="botao primario">Buscar nas lojas</button>
+      <button id="b-ampla" type="button" class="botao" title="Pesquisa na web inteira, inclusive lojas pequenas de domínio próprio, com selo de confiança. Leva cerca de 1 minuto.">Pesquisa ampla</button>
+    </form>
+    <span id="status" class="status"></span>
+  </div>
+</header>
+
+<main id="principal">
+  <div id="b-msg" class="aviso" role="status" hidden>
+    <span id="b-txt"></span>
+    <span class="aviso-acoes">
+      <button id="b-retry" type="button" class="botao" hidden>Tentar de novo</button>
+      <button id="b-fechar" type="button" class="botao" hidden>Fechar</button>
+    </span>
+  </div>
+  <section id="mercado" role="tabpanel" aria-labelledby="t-br">
+    <div id="cn-info" class="cn-info" hidden>
+      <div id="cn-chips" class="chips"></div>
+      <details class="como">
+        <summary>Como o preço é feito</summary>
+        <p>A China traz a 1688 e o Taobao (via KakoBuy, o agente principal): vêm em yuan, são convertidos pela cotação do dia e aparecem com o <b>total estimado</b>: produto + frete interno na China + frete aéreo para o Brasil, rateado num pacote de 3 kg. O peso é estimado pelo tipo de peça. Os agentes não cobram comissão. Imposto não entra na conta. Anúncio com termo de réplica ou marca famosa no título <b>não some</b>: aparece com a etiqueta “Possível réplica · não é de confiança” e desce na ordem.</p>
+        <p>Roupa e calçado chinês usam tabela asiática: peça 1 a 2 números acima do que você usa.</p>
+      </details>
+    </div>
+    <div id="py-info" class="cn-info" hidden>
+      <div id="py-chips" class="chips"></div>
+      <details class="como">
+        <summary>Como o preço é feito</summary>
+        <p>Os preços vêm do Compras Paraguai, que reúne as lojas de Ciudad del Este, Pedro Juan Caballero e Salto del Guairá. Cada loja anuncia o preço <b>à vista em dólar</b>; o valor em reais é o do próprio site, pelo câmbio dele. Pagar em reais ou no cartão na loja costuma sair um pouco mais caro.</p>
+        <p>Produtos usados, swap e recondicionados ficam de fora. Imposto não entra na conta: entrando por terra, cada pessoa tem cota de US$ 500 por mês sem imposto; acima disso, paga 50% sobre o que passar. A garantia, em geral, só vale no Paraguai.</p>
+      </details>
+    </div>
+
+    <div class="layout">
+      <div id="fundo-filtros" class="fundo-filtros" hidden></div>
+      <aside id="filtros" class="filtros" aria-label="Filtros">
+        <div class="filtros-topo">
+          <h2>Filtros</h2>
+          <button id="limpar" type="button" class="link">Limpar tudo</button>
+          <button id="fechar-filtros" type="button" class="fechar" aria-label="Fechar filtros">×</button>
+        </div>
+
+        <div id="g-wish"></div>
+        <div id="g-seg"></div>
+        <div id="g-marca"></div>
+        <div id="g-loja"></div>
+        <div id="g-pub"></div>
+
+        <details class="grupo" data-g="preco" open>
+          <summary>Preço</summary>
+          <div class="preco-faixa">
+            <label class="sr" for="v-pmin">Preço mínimo em reais</label>
+            <input id="v-pmin" type="number" min="0" step="10" inputmode="numeric" placeholder="De R$">
+            <span aria-hidden="true">até</span>
+            <label class="sr" for="v-pmax">Preço máximo em reais</label>
+            <input id="v-pmax" type="number" min="0" step="10" inputmode="numeric" placeholder="R$">
+          </div>
+        </details>
+
+        <details class="grupo" data-g="desc" open>
+          <summary>Desconto mínimo</summary>
+          <div class="pilulas" role="radiogroup" aria-label="Desconto mínimo">
+            <label><input type="radio" name="desc" value="0" checked><span>Qualquer</span></label>
+            <label><input type="radio" name="desc" value="10"><span>10%</span></label>
+            <label><input type="radio" name="desc" value="20"><span>20%</span></label>
+            <label><input type="radio" name="desc" value="30"><span>30%</span></label>
+            <label><input type="radio" name="desc" value="50"><span>50%</span></label>
+          </div>
+        </details>
+
+        <details class="grupo" data-g="nota">
+          <summary>Nota mínima</summary>
+          <div class="nota-faixa">
+            <label class="sr" for="v-nota">Nota mínima de 0 a 100</label>
+            <input id="v-nota" type="range" min="0" max="100" step="5" value="0">
+            <output id="v-nota-v" for="v-nota">0</output>
+          </div>
+          <p class="ajuda">A nota (0 a 100) junta a opinião da comunidade, o desconto confirmado, a confiança na loja, se é o menor preço já visto e se o preço foi conferido há pouco.</p>
+        </details>
+
+        <div id="g-fonte"></div>
+
+        <details class="grupo" data-g="periodo">
+          <summary>Período</summary>
+          <label class="sr" for="v-periodo">Período das ofertas</label>
+          <select id="v-periodo">
+            <option value="6">Últimas 6 horas</option>
+            <option value="24">Últimas 24 horas</option>
+            <option value="48">Últimas 48 horas</option>
+            <option value="168">Últimos 7 dias</option>
+            <option value="0">Todo o período</option>
+          </select>
+          <p class="ajuda">Não vale para Minhas buscas: elas mostram tudo que já chegou.</p>
+        </details>
+
+        <details class="grupo" data-g="mostrar" open>
+          <summary>Mostrar</summary>
+          <div class="opc">
+            <label><input id="v-agrupar" type="checkbox" checked><span class="rot">Agrupar ofertas iguais</span></label>
+            <label><input id="v-promo" type="checkbox"><span class="rot">Só promoções</span></label>
+            <label><input id="v-menor" type="checkbox"><span class="rot">Só menor preço visto</span></label>
+            <label><input id="v-conf" type="checkbox"><span class="rot">Só lojas confiáveis</span></label>
+            <label><input id="v-cupons" type="checkbox"><span class="rot">Incluir cupons</span></label>
+            <label><input id="v-exp" type="checkbox"><span class="rot">Incluir expiradas</span></label>
+          </div>
+        </details>
+
+        <div class="filtros-rodape">
+          <button id="ver-resultados" type="button" class="botao primario">Ver resultados</button>
+        </div>
+      </aside>
+
+      <div class="conteudo">
+        <div class="ferramentas" id="ferramentas">
+          <button id="abrir-filtros" type="button" class="botao" aria-controls="filtros" aria-expanded="false">Filtros <span id="n-filtros" class="n-sel" hidden></span></button>
+          <button id="b-gerenciar" type="button" class="botao" data-gerenciar title="Ver, manter e apagar as buscas salvas">Minhas buscas</button>
+          <p class="contagem" id="contagem-p"><span id="contagem"></span><span id="status2" class="status2"></span></p>
+          <label class="ordem"><span class="ordem-t">Ordenar</span>
+            <select id="v-ordem" aria-label="Ordenar por">
+              <option value="score">Melhor nota</option>
+              <option value="preco">Menor preço</option>
+              <option value="desconto">Maior desconto</option>
+              <option value="recente">Mais recentes</option>
+            </select>
+          </label>
+          <div class="vista" role="group" aria-label="Forma de exibição">
+            <button id="vista-grade" type="button" aria-pressed="true">Grade</button>
+            <button id="vista-lista" type="button" aria-pressed="false">Lista</button>
+          </div>
+        </div>
+        <div id="ativos" class="ativos" aria-label="Filtros ativos" hidden></div>
+        <span id="anuncio" class="sr" role="status"></span>
+        <div id="destaques" class="destaques" hidden></div>
+        <div id="comparativo" class="comparativo" hidden></div>
+        <div id="grade" class="grade" aria-busy="true"><div class="vazio"><p>Carregando ofertas…</p></div></div>
+        <p class="mais-itens-wrap"><button id="mais-itens" type="button" class="botao" hidden></button></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparar" role="tabpanel" aria-labelledby="t-cmp" hidden>
+    <div id="cmp-corpo"></div>
+  </section>
+
+  <section id="links" role="tabpanel" aria-labelledby="t-lnk" hidden>
+    <div class="lk">
+      <form id="lk-form" class="lk-form">
+        <label class="sr" for="lk-texto">Link do produto da China</label>
+        <input id="lk-texto" type="text" placeholder="Cole o link do produto: Weidian, Taobao, 1688, Goofish ou de um agente…" autocomplete="off" spellcheck="false" enterkeyhint="go">
+        <button id="lk-ok" type="submit" class="botao primario">Calcular custo</button>
+        <label class="lk-salvar"><input id="lk-salvar" type="checkbox" checked><span>Guardar na minha lista</span></label>
+      </form>
+      <div id="lk-lista" class="lk-lista"></div>
+      <p class="c3-rodape">O custo é estimado: produto convertido pela cotação do dia + frete dentro da China + frete aéreo pela tabela de cada agente (num pacote de 3 kg, o frete é dividido entre as peças). Imposto não entra. O peso é estimado pelo tipo de peça. Itens do Weidian são conferidos todo dia; Taobao, 1688 e Goofish ao clicar em “Conferir de novo”.</p>
+    </div>
+  </section>
+</main>
+
+<dialog id="d-buscas" class="dlg" aria-labelledby="d-buscas-t">
+  <div class="dlg-in">
+    <header class="dlg-topo"><h2 id="d-buscas-t">Minhas buscas</h2><button id="g-x" type="button" class="fechar" aria-label="Fechar" style="display:block">×</button></header>
+    <p class="ajuda">Marque o que você quer <b>apagar</b>. A busca deixa de se repetir e as ofertas que só existiam por ela saem do painel e do site. O que ficar desmarcado continua. Dica: marque as que quer <b>manter</b> e use “Inverter”.</p>
+    <div class="dlg-ferr">
+      <label class="sr" for="g-q">Filtrar buscas</label><input id="g-q" type="search" placeholder="Filtrar buscas…" autocomplete="off">
+      <button type="button" class="link" id="g-todas">Marcar todas</button>
+      <button type="button" class="link" id="g-nenhuma">Desmarcar</button>
+      <button type="button" class="link" id="g-inverter">Inverter</button>
+    </div>
+    <ul id="g-lista" class="dlg-lista"></ul>
+    <footer class="dlg-pe"><span id="g-resumo" class="ajuda" role="status"></span><span class="dlg-botoes"><button type="button" class="botao" id="g-fechar">Fechar</button><button type="button" class="botao perigo" id="g-apagar" disabled>Apagar</button></span></footer>
+  </div>
+</dialog>
+
+<script src="painel.js?v=29"></script>
+<script src="links.js?v=5"></script>
+</body>
+</html>
